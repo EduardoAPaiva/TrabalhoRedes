@@ -1,12 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <pthread.h>
+#include "includes/func.h"
 
 #define PORTA 8080
-#define TAM_BUFFER 1024
 
 int socket_servidor;
 
@@ -58,7 +52,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("Conectado ao servidor.\n");
+    printf("Conectado ao servidor.\nDigite seu nome: ");
 
     pthread_create(&thread, NULL, receber_mensagens, NULL);
 
