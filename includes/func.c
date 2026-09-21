@@ -182,7 +182,7 @@ void terminal_em_turno(JOGO *partida, CLIENTE *remetente){
 
     if(remetente == partida->jogador1){
         sprintf(antes, "PARTIDA ENCONTRADA!\nSEU ADVERSARIO: %s\n\n\nSEUS NAVIOS:\n", partida->jogador2->nickname);
-        sprintf(depois, "PONTOS RESTANTES: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ1);
+        sprintf(depois, "VIDAS RESTANTES: %d\nVIDAS RESTANTES DO ADVERSARIO: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ1, partida->pontos_restantesJ2);
         texto_tabuleiro(texto1, antes, depois, partida->tabuleiro_naviosJ1);
         texto_tabuleiro(texto2, texto1, "ESTA NA SUA VEZ DE JOGAR, ESCOLHA A CASA INIMIGA A SER ATACADA: \n", partida->tabuleiro_tirosJ1);
         send(partida->jogador1->socket, texto2, strlen(texto2), 0);
@@ -190,7 +190,7 @@ void terminal_em_turno(JOGO *partida, CLIENTE *remetente){
 
     else{
         sprintf(antes, "PARTIDA ENCONTRADA!\nSEU ADVERSARIO: %s\n\n\nSEUS NAVIOS:\n", partida->jogador1->nickname);
-        sprintf(depois, "PONTOS RESTANTES: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ2);
+        sprintf(depois, "VIDAS RESTANTES: %d\nVIDAS RESTANTES DO ADVERSARIO: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ2, partida->pontos_restantesJ1);
         texto_tabuleiro(texto1, antes, depois, partida->tabuleiro_naviosJ2);
         texto_tabuleiro(texto2, texto1, "ESTA NA SUA VEZ DE JOGAR, ESCOLHA A CASA INIMIGA A SER ATACADA: \n", partida->tabuleiro_tirosJ2);
         send(partida->jogador2->socket, texto2, strlen(texto2), 0);
@@ -207,7 +207,7 @@ void terminal_esperando_turno(JOGO *partida, CLIENTE *remetente){
 
     if(remetente == partida->jogador1){
         sprintf(antes, "PARTIDA ENCONTRADA!\nSEU ADVERSARIO: %s\n\n\nSEUS NAVIOS:\n", partida->jogador2->nickname);
-        sprintf(depois, "PONTOS RESTANTES: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ1);
+        sprintf(depois, "VIDAS RESTANTES: %d\nVIDAS RESTANTES DO ADVERSARIO: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ1, partida->pontos_restantesJ2);
         texto_tabuleiro(texto1, antes, depois, partida->tabuleiro_naviosJ1);
         texto_tabuleiro(texto2, texto1, "ESTA NA VEZ DO ADVERSARIO JOGAR, AGUARDE... \n", partida->tabuleiro_tirosJ1);
         send(partida->jogador1->socket, texto2, strlen(texto2), 0);
@@ -215,7 +215,7 @@ void terminal_esperando_turno(JOGO *partida, CLIENTE *remetente){
 
     else{
         sprintf(antes, "PARTIDA ENCONTRADA!\nSEU ADVERSARIO: %s\n\n\nSEUS NAVIOS:\n", partida->jogador1->nickname);
-        sprintf(depois, "PONTOS RESTANTES: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ2);
+        sprintf(depois, "VIDAS RESTANTES: %d\nVIDAS RESTANTES DO ADVERSARIO: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ2, partida->pontos_restantesJ1);
         texto_tabuleiro(texto1, antes, depois, partida->tabuleiro_naviosJ2);
         texto_tabuleiro(texto2, texto1, "ESTA NA VEZ DO ADVERSARIO JOGAR, AGUARDE... \n", partida->tabuleiro_tirosJ2);
         send(partida->jogador2->socket, texto2, strlen(texto2), 0);
@@ -355,19 +355,27 @@ int validar_ataque(char buffer[], CLIENTE *cliente){
 
     if(cliente == partida->jogador1){
 
-        if(partida->tabuleiro_naviosJ2[linha][coluna] == 'O')
+        if(partida->tabuleiro_naviosJ2[linha][coluna] == 'O'){
             partida->pontos_restantesJ2--;
+            partida->tabuleiro_tirosJ1[linha][coluna] = 'O';
+        }
+        else{
+            partida->tabuleiro_tirosJ1[linha][coluna] = 'X';
+        }
 
-        partida->tabuleiro_tirosJ1[linha][coluna] = 'X';
         partida->tabuleiro_naviosJ2[linha][coluna] = 'X';
     }
 
     if(cliente == partida->jogador2){
 
-        if(partida->tabuleiro_naviosJ1[linha][coluna] == 'O')
+        if(partida->tabuleiro_naviosJ1[linha][coluna] == 'O'){
             partida->pontos_restantesJ1--;
+            partida->tabuleiro_tirosJ2[linha][coluna] = 'O';
+        }
+        else{
+            partida->tabuleiro_tirosJ2[linha][coluna] = 'X';
+        }
 
-        partida->tabuleiro_tirosJ2[linha][coluna] = 'X';
         partida->tabuleiro_naviosJ1[linha][coluna] = 'X';
     }
 
