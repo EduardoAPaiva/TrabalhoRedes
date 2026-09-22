@@ -1,13 +1,6 @@
 #ifndef STRUCT_JOGO_H
 #define STRUCT_JOGO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <pthread.h>
-#include <time.h>
 #include "struct_cliente.h"
 
 struct JOGO{

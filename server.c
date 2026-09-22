@@ -80,21 +80,39 @@ void remover_cliente(CLIENTE *cliente) {
     JOGO *partida = cliente->partida;
     CLIENTE *jogador = NULL;
 
-    if(partida != NULL){
+    if(partida != NULL && cliente->estado != VITORIA && cliente->estado != DERROTA){
 
         if(cliente == partida->jogador1 && partida->jogador2 != NULL){
             partida->jogador2->estado = ESPERANDO_PARTIDA;
+            partida->jogador2->partida = NULL;
             jogador = partida->jogador2;
         }
 
         if(cliente == partida->jogador2 && partida->jogador1 != NULL){
             partida->jogador1->estado = ESPERANDO_PARTIDA;
+            partida->jogador1->partida = NULL;
             jogador = partida->jogador1;
         }
 
         printf("PARTIDA DE ID = %d FINALIZADA E EXCLUIDA POIS UM DOS JOGADORES DESCONECTOU\n", partida->id);
         deleta_jogo(partida, jogos);
         quantidade_jogos--;
+
+    }
+
+    else if(partida != NULL){
+
+        if(cliente == partida->jogador1 && partida->jogador2 != NULL)
+            partida->jogador1 = NULL;
+
+        else if(cliente == partida->jogador2 && partida->jogador2 != NULL)
+            partida->jogador2 = NULL;
+
+        else{
+            printf("PARTIDA DE ID = %d FINALIZADA E EXCLUIDA POIS AMBOS JOGADORES DESCONECTARAM\n", partida->id);
+            deleta_jogo(partida, jogos);
+            quantidade_jogos--;
+        }
 
     }
 
@@ -225,6 +243,8 @@ int main() {
     struct sockaddr_in endereco;
     socklen_t tamanho_endereco = sizeof(endereco);
     int opt = 1;
+
+    srand(time(NULL));
 
     qtd_pontos = 0;
     for(int i = 0; i<TAM_MAXIMO_NAVIO; i++){

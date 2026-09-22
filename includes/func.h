@@ -1,14 +1,6 @@
 #ifndef FUNC_H
 #define FUNC_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <pthread.h>
-#include <time.h>
-
 #include "struct_cliente.h"
 #include "struct_jogo.h"
 

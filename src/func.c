@@ -1,6 +1,6 @@
 #include "../includes/func.h"
 
-int numero_navios[6] = {0,0,1,2,2,1};
+int numero_navios[6] = {0,0,1,0,0,0};
 int qtd_pontos = 0;
 
 void salvar_nome(char *nome, CLIENTE *cliente){
@@ -127,7 +127,7 @@ char *texto_navios_disponiveis(int navios[TAM_MAXIMO_NAVIO], char buffer[]){
 
     }
 
-    pos += sprintf(buffer + pos, "\nONDE DESEJA POSICIONAR: ");
+    pos += sprintf(buffer + pos, "\nFORMATACAO:  N P A0\n\nEm N digite o tamanho do navio\nEm P a orientacao ('H' para horizontal e 'V' para vertical)\nEm A0 a casa onde deseja colocar, com coluna e linha juntos\n\nONDE DESEJA POSICIONAR: ");
 
     return buffer;
 
@@ -392,10 +392,10 @@ int validar_ataque(char buffer[], CLIENTE *cliente){
     int linha = buffer[1]-'0'+1;
     int coluna = buffer[0] - 'A'+1;
 
-    if(cliente == partida->jogador1 && partida->tabuleiro_tirosJ1[linha][coluna] == 'X')
+    if(cliente == partida->jogador1 && partida->tabuleiro_tirosJ1[linha][coluna] != ' ')
         return CASA_JA_ATACADA;
 
-    else if(cliente == partida->jogador2 && partida->tabuleiro_tirosJ2[linha][coluna] == 'X')
+    else if(cliente == partida->jogador2 && partida->tabuleiro_tirosJ2[linha][coluna] != ' ')
         return CASA_JA_ATACADA;
 
 
@@ -463,6 +463,8 @@ void aguardar_adversario_posicionar(CLIENTE *cliente){
 
     JOGO *partida = cliente->partida;
 
+
+
     if(cliente == partida->jogador1 && partida->jogador2->estado == POSICIONANDO_NAVIOS)
         cliente->estado = AGUARDANDO_ADVERSARIO_POSICIONAR;
 
@@ -470,17 +472,40 @@ void aguardar_adversario_posicionar(CLIENTE *cliente){
         cliente->estado = AGUARDANDO_ADVERSARIO_POSICIONAR;
 
     else if(cliente == partida->jogador1 && partida->jogador2->estado == AGUARDANDO_ADVERSARIO_POSICIONAR){
-        partida->jogador1->estado = EM_TURNO;
-        partida->jogador2->estado = ESPERANDO_TURNO;
-        terminal_em_turno(partida, partida->jogador1);
-        terminal_esperando_turno(partida, partida->jogador2);
+
+        int op = rand() % 2;
+
+        if(op == 0){
+            partida->jogador1->estado = EM_TURNO;
+            partida->jogador2->estado = ESPERANDO_TURNO;
+            terminal_em_turno(partida, partida->jogador1);
+            terminal_esperando_turno(partida, partida->jogador2);
+        }
+        else if(op == 1){
+            partida->jogador2->estado = EM_TURNO;
+            partida->jogador1->estado = ESPERANDO_TURNO;
+            terminal_em_turno(partida, partida->jogador2);
+            terminal_esperando_turno(partida, partida->jogador1);
+        }
     }
 
     else if(cliente == partida->jogador2 && partida->jogador1->estado == AGUARDANDO_ADVERSARIO_POSICIONAR){
-        partida->jogador2->estado = EM_TURNO;
-        partida->jogador1->estado = ESPERANDO_TURNO;
-        terminal_esperando_turno(partida, partida->jogador1);
-        terminal_em_turno(partida, partida->jogador2);
+
+        int op = rand() % 2;
+
+        if(op == 0){
+            partida->jogador1->estado = EM_TURNO;
+            partida->jogador2->estado = ESPERANDO_TURNO;
+            terminal_em_turno(partida, partida->jogador1);
+            terminal_esperando_turno(partida, partida->jogador2);
+        }
+        else if(op == 1){
+            partida->jogador2->estado = EM_TURNO;
+            partida->jogador1->estado = ESPERANDO_TURNO;
+            terminal_em_turno(partida, partida->jogador2);
+            terminal_esperando_turno(partida, partida->jogador1);
+        }
+
     }
 
 }

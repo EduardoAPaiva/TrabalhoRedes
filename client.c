@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    system("clear");
     printf("Conectado ao servidor.\nDigite seu nome: ");
 
     pthread_create(&thread, NULL, receber_mensagens, NULL);
