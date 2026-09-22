@@ -8,7 +8,14 @@ A aplicação implementa o jogo Batalha Naval, permitindo que diversas partidas 
 
 A arquitetura foi desenvolvida para suportar múltiplas conexões simultâneas por meio do uso de threads, permitindo que diferentes partidas sejam executadas de forma independente.
 
-## 2. Funcionalidades
+## 2. Integrantes
+
+- Caio Cesar Trentin de Assis — 15674233
+- Eduardo Alves Paiva — 15448481
+- João Pedro Biazus Fagá  — 15483280
+- Mariana do Nascimento Ferreira — 15582241
+
+## 3. Funcionalidades
 
 - Comunicação entre cliente e servidor utilizando socket TCP;
 - Conexão simultânea de vários clientes;
@@ -23,7 +30,7 @@ A arquitetura foi desenvolvida para suportar múltiplas conexões simultâneas p
 - Tratamento do encerramento e desconexão dos clientes;
 - Gerenciamento das conexões através de threads.
 
-## 3. Arquitetura da aplicação
+## 4. Arquitetura da aplicação
 
 A aplicação é dividida em duas partes principais:
 
@@ -51,7 +58,7 @@ O cliente é responsável por:
 5. Realizar as jogadas;
 6. Informar o encerramento da conexão.
 
-## 4. Múltiplas partidas simultâneas
+## 5. Múltiplas partidas simultâneas
 
 Um dos principais objetivos da implementação é permitir que o servidor gerencie mais de uma partida simultaneamente.
 
@@ -71,7 +78,7 @@ Dessa forma, é possível ter, por exemplo:
 
 Assim, enquanto dois jogadores estão disputando uma partida, outros jogadores podem se conectar ao servidor e iniciar outras partidas.
 
-## 5. Comunicação
+## 6. Comunicação
 
 A comunicação entre os clientes e o servidor é realizada utilizando sockets TCP.
 
@@ -88,7 +95,7 @@ As mensagens trocadas são utilizadas para controlar eventos como:
 - Vitória ou derrota;
 - Encerramento da conexão.
 
-## 6. Tratamento de conexões
+## 7. Tratamento de conexões
 
 O servidor permanece em execução aguardando novas conexões.
 
@@ -96,7 +103,7 @@ Quando um cliente se conecta, o servidor aceita a conexão e cria uma nova threa
 
 O encerramento de uma conexão também é tratado pelo servidor, permitindo liberar os recursos associados ao cliente e atualizar o estado da partida quando necessário.
 
-## 7. Estrutura do projeto
+## 8. Estrutura do projeto
 
 A estrutura do projeto é organizada da seguinte forma:
 
@@ -116,7 +123,7 @@ A estrutura do projeto é organizada da seguinte forma:
 └── README.md
 ```
 
-## 8. Requisitos
+## 9. Requisitos
 
 Para compilar e executar o projeto, é necessário:
 
@@ -126,7 +133,7 @@ Para compilar e executar o projeto, é necessário:
 
 O projeto utiliza apenas recursos disponíveis na linguagem C e nas bibliotecas padrão do sistema, conforme especificado no trabalho.
 
-## 9. Compilação
+## 10. Compilação
 
 Para compilar o projeto, execute:
 
@@ -134,7 +141,7 @@ Para compilar o projeto, execute:
 make
 ```
 
-## 10. Execução
+## 11. Execução
 
 ### Servidor
 
@@ -176,20 +183,13 @@ Terminal 5 → ./client
 
 Nesse cenário, os clientes podem ser organizados em diferentes partidas simultaneamente.
 
-## 11. Tecnologias utilizadas
+## 12. Tecnologias utilizadas
 
 - Linguagem: C
 - Comunicação: Socket TCP
 - Concorrência: POSIX Threads (pthread)
 - Compilador: GCC
 - Sistema operacional: Linux - Ubuntu
-
-## 12. Integrantes
-
-- Caio Cesar Trentin de Assis — 15674233
-- Eduardo Alves Paiva — 15448481
-- João Pedro Biazus Fagá  — 15483280
-- Mariana do Nascimento Ferreira — 15582241
 
 ## 13. Considerações
 
