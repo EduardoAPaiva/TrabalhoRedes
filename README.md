@@ -107,9 +107,9 @@ A estrutura do projeto é organizada da seguinte forma:
 ├── includes/
 │   ├── func.c
 │   ├── func.h
-│   └── struct_cliente.c
-│   └── struct_cliente.h
-│   └── struct_jogo.c
+│   ├── struct_cliente.c
+│   ├── struct_cliente.h
+│   ├── struct_jogo.c
 │   └── struct_jogo.h
 ├── run.sh
 └── README.md
