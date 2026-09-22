@@ -164,6 +164,7 @@ Onde o endereço correponde ao IP do computador executando o servidor.
 Para testar várias conexões simultaneamente, podem ser abertas várias instâncias do cliente em diferentes terminais.
 
 Por exemplo:
+```text
 
 Terminal 1 → ./server
 
@@ -171,41 +172,26 @@ Terminal 2 → ./client
 Terminal 3 → ./client
 Terminal 4 → ./client
 Terminal 5 → ./client
+```
 
 Nesse cenário, os clientes podem ser organizados em diferentes partidas simultaneamente.
 
-## 11. Exemplo de utilização
-
-Um possível fluxo de execução é:
-
-1. Servidor é iniciado;
-2. Cliente 1 se conecta;
-3. Cliente 2 se conecta;
-4. Cliente 1 e Cliente 2 são associados;
-5. Partida 1 é iniciada;
-6. Cliente 3 e Cliente 4 se conectam;
-7. Partida 2 é iniciada;
-8. Partida 1 e Partida 2 continuam sendo executadas simultaneamente.
-
-O servidor permanece disponível durante todo o processo, podendo aceitar novas conexões e iniciar novas partidas.
-
-## 12. Tecnologias utilizadas
+## 11. Tecnologias utilizadas
 
 - Linguagem: C
 - Comunicação: Socket TCP
 - Concorrência: POSIX Threads (pthread)
 - Compilador: GCC
-- Sistema operacional: Linux
-- Build: Makefile
+- Sistema operacional: Linux - Ubuntu
 
-## 13. Integrantes
+## 12. Integrantes
 
-- Nome 1 — Nº USP
-- Nome 2 — Nº USP
-- Nome 3 — Nº USP
-- Nome 4 — Nº USP
+- Caio Cesar Trentin de Assis — 15674233
+- Eduardo Alves Paiva — 15448481
+- João Pedro Biazus Fagá  — 15483280
+- Mariana do Nascimento Ferreira — 15582241
 
-## 14. Considerações
+## 13. Considerações
 
 O projeto demonstra a utilização de sockets para comunicação entre processos e o gerenciamento de múltiplas conexões simultâneas por meio de threads.
 
