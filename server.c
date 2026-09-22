@@ -236,9 +236,13 @@ void *atender_cliente(void *arg) {
     return NULL;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+
+    system("clear");
+
     int servidor;
     int cliente;
+    int porta;
     CLIENTE *novo_cliente;
     struct sockaddr_in endereco;
     socklen_t tamanho_endereco = sizeof(endereco);
@@ -271,7 +275,13 @@ int main() {
 
     endereco.sin_family = AF_INET;
     endereco.sin_addr.s_addr = INADDR_ANY;
-    endereco.sin_port = htons(PORTA);
+
+    if(argc == 1)
+        porta = PORTA;
+    else if(argc == 2)
+        porta = atoi(argv[1]);
+
+    endereco.sin_port = htons(porta);
 
     if (bind(servidor, (struct sockaddr *)&endereco, sizeof(endereco)) < 0) {
         perror("Erro no bind");
@@ -285,7 +295,7 @@ int main() {
         return 1;
     }
 
-    printf("Servidor iniciado na porta %d...\n", PORTA);
+    printf("Servidor iniciado na porta %d...\n", porta);
 
     while (1) {
         cliente = accept(servidor, (struct sockaddr *)&endereco, &tamanho_endereco);
