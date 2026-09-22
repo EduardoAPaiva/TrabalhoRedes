@@ -165,7 +165,6 @@ Para testar várias conexões simultaneamente, podem ser abertas várias instân
 
 Por exemplo:
 ```text
-
 Terminal 1 → ./server
 
 Terminal 2 → ./client
