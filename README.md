@@ -131,7 +131,7 @@ O projeto utiliza apenas recursos disponíveis na linguagem C e nas bibliotecas 
 Para compilar o projeto, execute:
 
 ```bash
-./run.sh
+make
 ```
 
 ## 10. Execução
