@@ -151,6 +151,14 @@ Primeiramente, execute o servidor:
 ./server
 ```
 
+Nesse caso, a porta escolhida será a padrão do programa (8080). Caso deseje escolher a porta:
+
+```bash
+./server XXXX
+```
+
+Onde, ao invés de XXXX, digitar a porta desejada.
+
 O servidor ficará aguardando novas conexões de clientes.
 
 ### Cliente
@@ -161,13 +169,21 @@ Em outro terminal, execute:
 ./client
 ```
 
+Nesse caso, a conexão ocorrerá no mesmo computador com a porta padrão (8080). Caso deseje escolher a porta:
+
+```bash
+./client XXXX
+```
+
+Onde, ao invés de XXXX, digitar a porta desejada.
+
 Em caso de conexão em outro computador conectado a mesma rede LAN, execute:
 
 ```bash
-./client 192.168.X.X
+./client XXXX 192.168.X.X
 ```
 
-Onde o endereço correponde ao IP do computador executando o servidor.
+Onde XXXX deve ser substituído pela porta desejada (caso deseje utilizar a padrão, substitua esse bloco pelo número 0) e o endereço correponde ao IP do computador executando o servidor.
 
 Para testar várias conexões simultaneamente, podem ser abertas várias instâncias do cliente em diferentes terminais.
 

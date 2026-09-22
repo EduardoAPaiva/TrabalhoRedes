@@ -26,6 +26,7 @@
 #define TAM_MAXIMO_NAVIO 6
 
 #define TAM_BUFFER 1024*10
+#define PORTA 8080
 
 #include <stdio.h>
 #include <stdlib.h>

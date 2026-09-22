@@ -2,7 +2,6 @@
 #include "includes/struct_cliente.h"
 #include "includes/struct_jogo.h"
 
-#define PORTA 8080
 #define MAX_CLIENTES 4
 
 LISTA_CLIENTES *clientes;

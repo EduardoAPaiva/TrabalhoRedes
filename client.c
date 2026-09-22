@@ -1,7 +1,5 @@
 #include "includes/func.h"
 
-#define PORTA 8080
-
 int socket_servidor;
 
 void *receber_mensagens(void *arg) {
@@ -29,6 +27,7 @@ void *receber_mensagens(void *arg) {
 
 int main(int argc, char *argv[]) {
     struct sockaddr_in servidor;
+    int porta = PORTA;
     char buffer[TAM_BUFFER];
     pthread_t thread;
 
@@ -40,11 +39,16 @@ int main(int argc, char *argv[]) {
     }
 
     servidor.sin_family = AF_INET;
-    servidor.sin_port = htons(PORTA);
-    if(argc == 1)
+
+    if(argc > 1 && atoi(argv[1]) != 0)
+        porta = atoi(argv[1]);
+
+    servidor.sin_port = htons(porta);
+
+    if(argc < 3)
         servidor.sin_addr.s_addr = inet_addr("127.0.0.1");
     else
-        servidor.sin_addr.s_addr = inet_addr(argv[1]);
+        servidor.sin_addr.s_addr = inet_addr(argv[2]);
 
     if (connect(socket_servidor, (struct sockaddr *)&servidor, sizeof(servidor)) < 0) {
         perror("Erro ao conectar");
