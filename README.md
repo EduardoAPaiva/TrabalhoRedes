@@ -113,6 +113,7 @@ A estrutura do projeto é organizada da seguinte forma:
 │   └── struct_jogo.h
 ├── run.sh
 └── README.md
+```
 
 ## 8. Requisitos
 
