@@ -1,4 +1,4 @@
-#include "func.h"
+#include "../includes/func.h"
 
 int numero_navios[6] = {0,0,1,2,2,1};
 int qtd_pontos = 0;

@@ -1,4 +1,4 @@
-#include "struct_cliente.h"
+#include "../includes/struct_cliente.h"
 
 LISTA_CLIENTES* cria_lista_clientes(){
 

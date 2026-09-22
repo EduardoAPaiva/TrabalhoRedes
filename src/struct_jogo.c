@@ -1,4 +1,4 @@
-#include "struct_jogo.h"
+#include "../includes/struct_jogo.h"
 
 extern int qtd_pontos;
 
