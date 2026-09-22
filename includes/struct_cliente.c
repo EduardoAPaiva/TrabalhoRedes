@@ -43,9 +43,9 @@ CLIENTE *adiciona_cliente(int socket, LISTA_CLIENTES *lista){
 
 void deleta_cliente(CLIENTE *cliente, LISTA_CLIENTES *lista){
 
-    if(*lista = cliente){
+    if(*lista == cliente){
         *lista = cliente->prox;
-        (*lista)->ant = NULL;
+        if(*lista != NULL) (*lista)->ant = NULL;
     }
 
     else{

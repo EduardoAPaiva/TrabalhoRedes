@@ -1,6 +1,6 @@
 #include "func.h"
 
-int numero_navios[6] = {0,0,1,2,1,1};
+int numero_navios[6] = {0,0,1,0,0,0};
 int qtd_pontos = 0;
 
 void salvar_nome(char *nome, CLIENTE *cliente){
@@ -223,6 +223,52 @@ void terminal_esperando_turno(JOGO *partida, CLIENTE *remetente){
 
 }
 
+void terminal_vitoria(JOGO *partida, CLIENTE *remetente){
+    char antes[150];
+    char texto1[TAM_BUFFER];
+    char texto2[TAM_BUFFER];
+    char depois[TAM_BUFFER];
+
+    if(remetente == partida->jogador1){
+        sprintf(antes, "PARTIDA ENCONTRADA!\nSEU ADVERSARIO: %s\n\n\nSEUS NAVIOS:\n", partida->jogador2->nickname);
+        sprintf(depois, "VIDAS RESTANTES: %d\nVIDAS RESTANTES DO ADVERSARIO: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ1, partida->pontos_restantesJ2);
+        texto_tabuleiro(texto1, antes, depois, partida->tabuleiro_naviosJ1);
+        texto_tabuleiro(texto2, texto1, "PARABENS!!! VOCE VENCEU =)\nDIGITE \"BUSCAR\" PARA ENCONTRAR NOVA PARTIDA\n", partida->tabuleiro_tirosJ1);
+        send(partida->jogador1->socket, texto2, strlen(texto2), 0);
+    }
+
+    else{
+        sprintf(antes, "PARTIDA ENCONTRADA!\nSEU ADVERSARIO: %s\n\n\nSEUS NAVIOS:\n", partida->jogador1->nickname);
+        sprintf(depois, "VIDAS RESTANTES: %d\nVIDAS RESTANTES DO ADVERSARIO: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ2, partida->pontos_restantesJ1);
+        texto_tabuleiro(texto1, antes, depois, partida->tabuleiro_naviosJ2);
+        texto_tabuleiro(texto2, texto1, "PARABENS!!! VOCE VENCEU =)\nDIGITE \"BUSCAR\" PARA ENCONTRAR NOVA PARTIDA\n", partida->tabuleiro_tirosJ2);
+        send(partida->jogador2->socket, texto2, strlen(texto2), 0);
+    }
+}
+
+void terminal_derrota(JOGO *partida, CLIENTE *remetente){
+    char antes[150];
+    char texto1[TAM_BUFFER];
+    char texto2[TAM_BUFFER];
+    char depois[TAM_BUFFER];
+
+    if(remetente == partida->jogador1){
+        sprintf(antes, "PARTIDA ENCONTRADA!\nSEU ADVERSARIO: %s\n\n\nSEUS NAVIOS:\n", partida->jogador2->nickname);
+        sprintf(depois, "VIDAS RESTANTES: %d\nVIDAS RESTANTES DO ADVERSARIO: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ1, partida->pontos_restantesJ2);
+        texto_tabuleiro(texto1, antes, depois, partida->tabuleiro_naviosJ1);
+        texto_tabuleiro(texto2, texto1, "VOCE PERDEU =( TENTE A SORTE NA PROXIMA\nDIGITE \"BUSCAR\" PARA ENCONTRAR NOVA PARTIDA\n", partida->tabuleiro_tirosJ1);
+        send(partida->jogador1->socket, texto2, strlen(texto2), 0);
+    }
+
+    else{
+        sprintf(antes, "PARTIDA ENCONTRADA!\nSEU ADVERSARIO: %s\n\n\nSEUS NAVIOS:\n", partida->jogador1->nickname);
+        sprintf(depois, "VIDAS RESTANTES: %d\nVIDAS RESTANTES DO ADVERSARIO: %d\n\n\nSEUS TIROS: ", partida->pontos_restantesJ2, partida->pontos_restantesJ1);
+        texto_tabuleiro(texto1, antes, depois, partida->tabuleiro_naviosJ2);
+        texto_tabuleiro(texto2, texto1, "VOCE PERDEU =( TENTE A SORTE NA PROXIMA\nDIGITE \"BUSCAR\" PARA ENCONTRAR NOVA PARTIDA\n", partida->tabuleiro_tirosJ2);
+        send(partida->jogador2->socket, texto2, strlen(texto2), 0);
+    }
+}
+
 int validar_posicionamento(char buffer[], CLIENTE *cliente){
 
     if(buffer[0] == 'R' && (buffer[1] == '\n' || buffer[1] == '\0'))
@@ -358,6 +404,16 @@ int validar_ataque(char buffer[], CLIENTE *cliente){
         if(partida->tabuleiro_naviosJ2[linha][coluna] == 'O'){
             partida->pontos_restantesJ2--;
             partida->tabuleiro_tirosJ1[linha][coluna] = 'O';
+
+            if(partida->pontos_restantesJ2 == 0){
+                partida->jogador1->estado = VITORIA;
+                terminal_vitoria(partida, partida->jogador1);
+
+                partida->jogador2->estado = DERROTA;
+                terminal_derrota(partida, partida->jogador2);
+                return PARTIDA_FINALIZADA;
+            }
+
         }
         else{
             partida->tabuleiro_tirosJ1[linha][coluna] = 'X';
@@ -371,8 +427,19 @@ int validar_ataque(char buffer[], CLIENTE *cliente){
         if(partida->tabuleiro_naviosJ1[linha][coluna] == 'O'){
             partida->pontos_restantesJ1--;
             partida->tabuleiro_tirosJ2[linha][coluna] = 'O';
+
+            if(partida->pontos_restantesJ1 == 0){
+                partida->jogador2->estado = VITORIA;
+                terminal_vitoria(partida, partida->jogador2);
+
+                partida->jogador1->estado = DERROTA;
+                terminal_derrota(partida, partida->jogador1);
+                return PARTIDA_FINALIZADA;
+            }
+
         }
         else{
+
             partida->tabuleiro_tirosJ2[linha][coluna] = 'X';
         }
 
@@ -380,6 +447,15 @@ int validar_ataque(char buffer[], CLIENTE *cliente){
     }
 
     return SUCESSO;
+
+}
+
+int validar_busca_partida(char buffer[], CLIENTE *cliente){
+
+    if(strcmp(buffer, "BUSCAR") == 0 || strcmp(buffer, "BUSCAR\n") == 0)
+        return SUCESSO;
+    
+    return FORMATACAO_ERRADA;
 
 }
 

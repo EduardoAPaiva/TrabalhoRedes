@@ -9,6 +9,7 @@ LISTA_CLIENTES *clientes;
 LISTA_JOGOS *jogos;
 int quantidade_clientes = 0;
 int quantidade_jogos = 0;
+int id_atual_partida = 1;
 
 extern int numero_navios[TAM_MAXIMO_NAVIO];
 extern int qtd_pontos;
@@ -19,7 +20,7 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void atualizar_partida(char *texto, int bytes_recebidos, CLIENTE *remetente) {
 
-    char buffer[TAM_BUFFER+70];
+    char buffer[TAM_BUFFER];
 
     pthread_mutex_lock(&mutex);
 
@@ -32,6 +33,9 @@ void atualizar_partida(char *texto, int bytes_recebidos, CLIENTE *remetente) {
     else if(remetente->estado == ESPERANDO_PARTIDA && cliente_esperando != NULL && cliente_esperando != remetente){
 
         JOGO *partida = adiciona_jogo(cliente_esperando, remetente, jogos);
+        partida->id = id_atual_partida;
+        id_atual_partida++;
+        printf("PARTIDA DE ID = %d CRIADA COM OS JOGADORES [%s] e [%s]\n", partida->id, remetente->nickname, cliente_esperando->nickname);
         preparar_tabuleiro(partida);
         quantidade_jogos++;
         cliente_esperando = NULL;
@@ -57,17 +61,50 @@ void atualizar_partida(char *texto, int bytes_recebidos, CLIENTE *remetente) {
         terminal_esperando_turno(remetente->partida, remetente);
     }
 
+    else if(remetente->estado == VITORIA){
+        terminal_vitoria(remetente->partida, remetente);
+    }
+
+    else if(remetente->estado == DERROTA){
+        terminal_derrota(remetente->partida, remetente);
+    }
+
     pthread_mutex_unlock(&mutex);
 
 }
 
 void remover_cliente(CLIENTE *cliente) {
+
     pthread_mutex_lock(&mutex);
+
+    JOGO *partida = cliente->partida;
+    CLIENTE *jogador = NULL;
+
+    if(partida != NULL){
+
+        if(cliente == partida->jogador1 && partida->jogador2 != NULL){
+            partida->jogador2->estado = ESPERANDO_PARTIDA;
+            jogador = partida->jogador2;
+        }
+
+        if(cliente == partida->jogador2 && partida->jogador1 != NULL){
+            partida->jogador1->estado = ESPERANDO_PARTIDA;
+            jogador = partida->jogador1;
+        }
+
+        printf("PARTIDA DE ID = %d FINALIZADA E EXCLUIDA POIS UM DOS JOGADORES DESCONECTOU\n", partida->id);
+        deleta_jogo(partida, jogos);
+
+    }
 
     deleta_cliente(cliente, clientes);
     quantidade_clientes--;
 
     pthread_mutex_unlock(&mutex);
+
+    if(jogador != NULL)
+        atualizar_partida(" ", 2, jogador);
+
 }
 
 void *atender_cliente(void *arg) {
@@ -134,6 +171,35 @@ void *atender_cliente(void *arg) {
             }
 
             pthread_mutex_unlock(&mutex);
+        }
+
+        if(cliente->estado == VITORIA || cliente->estado == DERROTA){
+
+            pthread_mutex_lock(&mutex);
+
+            int validade = validar_busca_partida(buffer, cliente);
+
+            if(validade == SUCESSO){
+
+                JOGO *partida = cliente->partida;
+
+                if(cliente == cliente->partida->jogador1)
+                    cliente->partida->jogador1 = NULL;
+                else if(cliente == cliente->partida->jogador2)
+                    cliente->partida->jogador2 = NULL;
+
+                cliente->partida = NULL;
+                cliente->estado = ESPERANDO_PARTIDA;
+
+                if(partida->jogador1 == NULL && partida->jogador2 == NULL){
+                    printf("PARTIDA DE ID = %d FINALIZADA E EXCLUIDA\n", partida->id);
+                    deleta_jogo(partida, jogos);
+                }
+
+            }
+
+            pthread_mutex_unlock(&mutex);
+
         }
 
         atualizar_partida(buffer, bytes_recebidos, cliente);

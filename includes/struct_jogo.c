@@ -49,3 +49,19 @@ JOGO *adiciona_jogo(CLIENTE *jogador1, CLIENTE *jogador2, LISTA_JOGOS *lista){
     return novo_jogo;
 
 }
+
+void deleta_jogo(JOGO *jogo, LISTA_JOGOS *lista){
+
+    if(*lista == jogo){
+        *lista = jogo->prox;
+        if(*lista != NULL) (*lista)->ant = NULL;
+    }
+
+    else{
+        (jogo->ant)->prox = jogo->prox;
+        if(jogo->prox != NULL) (jogo->prox)->ant = jogo->ant;
+    }
+
+    free(jogo);
+
+}

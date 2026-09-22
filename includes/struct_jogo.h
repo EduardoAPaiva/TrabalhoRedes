@@ -25,9 +25,7 @@ struct JOGO{
     int pontos_restantesJ1;
     int pontos_restantesJ2;
 
-    int turno;
-
-    int ESTADO;
+    int id;
 
     JOGO *prox;
     JOGO *ant;
@@ -36,5 +34,6 @@ struct JOGO{
 
 LISTA_JOGOS* cria_lista_jogos();
 JOGO *adiciona_jogo(CLIENTE *jogador1, CLIENTE *jogador2, LISTA_JOGOS *lista);
+void deleta_jogo(JOGO *jogo, LISTA_JOGOS *lista);
 
 #endif
