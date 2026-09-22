@@ -94,6 +94,7 @@ void remover_cliente(CLIENTE *cliente) {
 
         printf("PARTIDA DE ID = %d FINALIZADA E EXCLUIDA POIS UM DOS JOGADORES DESCONECTOU\n", partida->id);
         deleta_jogo(partida, jogos);
+        quantidade_jogos--;
 
     }
 
@@ -194,6 +195,7 @@ void *atender_cliente(void *arg) {
                 if(partida->jogador1 == NULL && partida->jogador2 == NULL){
                     printf("PARTIDA DE ID = %d FINALIZADA E EXCLUIDA\n", partida->id);
                     deleta_jogo(partida, jogos);
+                    quantidade_jogos--;
                 }
 
             }
