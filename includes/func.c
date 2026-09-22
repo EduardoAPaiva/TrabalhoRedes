@@ -1,6 +1,6 @@
 #include "func.h"
 
-int numero_navios[6] = {0,0,1,0,0,0};
+int numero_navios[6] = {0,0,1,2,2,1};
 int qtd_pontos = 0;
 
 void salvar_nome(char *nome, CLIENTE *cliente){
