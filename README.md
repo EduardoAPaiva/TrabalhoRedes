@@ -100,14 +100,19 @@ O encerramento de uma conexão também é tratado pelo servidor, permitindo libe
 
 A estrutura do projeto é organizada da seguinte forma:
 
+```text
 .
 ├── server.c
 ├── client.c
-├── ...
-├── Makefile
+├── includes/
+│   ├── func.c
+│   ├── func.h
+│   └── struct_cliente.c
+│   └── struct_cliente.h
+│   └── struct_jogo.c
+│   └── struct_jogo.h
+├── run.sh
 └── README.md
-
-A estrutura acima deve ser ajustada caso os arquivos do projeto estejam organizados de outra maneira.
 
 ## 8. Requisitos
 
@@ -116,7 +121,6 @@ Para compilar e executar o projeto, é necessário:
 - Sistema operacional Linux;
 - Compilador GCC;
 - Bibliotecas padrão de sockets e threads disponíveis no sistema;
-- make.
 
 O projeto utiliza apenas recursos disponíveis na linguagem C e nas bibliotecas padrão do sistema, conforme especificado no trabalho.
 
@@ -124,11 +128,9 @@ O projeto utiliza apenas recursos disponíveis na linguagem C e nas bibliotecas 
 
 Para compilar o projeto, execute:
 
-make
-
-Caso seja necessário limpar os arquivos gerados anteriormente:
-
-make clean
+```bash
+./run.sh
+```
 
 ## 10. Execução
 
@@ -136,7 +138,9 @@ make clean
 
 Primeiramente, execute o servidor:
 
+```bash
 ./server
+```
 
 O servidor ficará aguardando novas conexões de clientes.
 
@@ -144,7 +148,17 @@ O servidor ficará aguardando novas conexões de clientes.
 
 Em outro terminal, execute:
 
+```bash
 ./client
+```
+
+Em caso de conexão em outro computador conectado a mesma rede LAN, execute:
+
+```bash
+./client 192.168.X.X
+```
+
+Onde o endereço correponde ao IP do computador executando o servidor.
 
 Para testar várias conexões simultaneamente, podem ser abertas várias instâncias do cliente em diferentes terminais.
 
