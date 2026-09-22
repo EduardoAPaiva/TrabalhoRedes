@@ -112,13 +112,16 @@ A estrutura do projeto é organizada da seguinte forma:
 ├── server.c
 ├── client.c
 ├── src/
-│   ├── func.c
+│   ├── funcoes.c
 │   ├── struct_cliente.c
-│   └── struct_jogo.c
+│   ├── struct_jogo.c
+│   └── terminal.c
 ├── includes/
-│   ├── func.h
+│   ├── consts.h
+│   ├── funcoes.h
 │   ├── struct_cliente.h
-│   └── struct_jogo.h
+│   ├── struct_jogo.h
+│   └── terminal.h
 ├── run.sh
 └── README.md
 ```

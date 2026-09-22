@@ -1,8 +1,8 @@
-#include "includes/func.h"
+#include "includes/funcoes.h"
 #include "includes/struct_cliente.h"
 #include "includes/struct_jogo.h"
-
-#define MAX_CLIENTES 4
+#include "includes/terminal.h"
+#include "includes/consts.h"
 
 LISTA_CLIENTES *clientes;
 LISTA_JOGOS *jogos;
@@ -276,7 +276,7 @@ int main(int argc, char *argv[]) {
     endereco.sin_addr.s_addr = INADDR_ANY;
 
     if(argc == 1)
-        porta = PORTA;
+        porta = PORTA_PADRAO;
     else if(argc == 2)
         porta = atoi(argv[1]);
 

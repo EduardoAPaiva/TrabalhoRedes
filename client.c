@@ -1,4 +1,4 @@
-#include "includes/func.h"
+#include "includes/funcoes.h"
 
 int socket_servidor;
 
@@ -27,7 +27,7 @@ void *receber_mensagens(void *arg) {
 
 int main(int argc, char *argv[]) {
     struct sockaddr_in servidor;
-    int porta = PORTA;
+    int porta = PORTA_PADRAO;
     char buffer[TAM_BUFFER];
     pthread_t thread;
 
