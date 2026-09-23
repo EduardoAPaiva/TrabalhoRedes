@@ -1,7 +1,11 @@
 #ifndef CONSTS_H
 #define CONSTS_H
 
-//Definicoes de estados para os jogadores
+// Definicoes de TRUE e FALSE para melhor entendimento do codigo
+#define TRUE 1
+#define FALSE 0
+
+// Definicoes de estados para os jogadores
 #define ESPERANDO_PARTIDA 1
 #define POSICIONANDO_NAVIOS 2
 #define AGUARDANDO_ADVERSARIO_POSICIONAR 3
@@ -10,7 +14,7 @@
 #define DERROTA 6
 #define VITORIA 7
 
-//Definicoes de codigos de retorno para funcoes de validacao
+// Definicoes de codigos de retorno para funcoes de validacao
 #define TAMANHO_INVALIDO 1
 #define FORMATACAO_ERRADA 2
 #define ORIENTACAO_INVALIDA 3
