@@ -15,7 +15,7 @@ void resetar_tabuleiro(CLIENTE *cliente);
 // Funcao que coloca num buffer um texto, depois um tabuleiro, e depois outro texto. Esse buffer sera enviado para atualizar o terminal do cliente
 void* texto_tabuleiro(char buffer[], char antes[], char depois[], char tabuleiro[12][12]);
 // Funcao que analisa quantos navios uma lista de navios tem de disponibilidade, e cria o texto pra isso
-char *texto_navios_disponiveis(int navios[6], char buffer[]);
+void* texto_navios_disponiveis(int navios[TAM_MAXIMO_NAVIO], char buffer[]);
 // Funcao que analisa se um comando de posicionamento de navio recebido pelo cliente esta valido de acordo com o estado da partida e do tabuleiro
 int validar_posicionamento(char buffer[], CLIENTE *cliente);
 // Funcao que analisa se um comando de ataque recebido pelo cliente esta valido de acordo com o estado da partida e do tabuleiro
