@@ -1,4 +1,4 @@
-#include "includes/funcoes.h"
+#include "includes/consts.h"
 
 // Variavel global que mantera o socket do servidor a qual o cliente esta conectado
 int socket_servidor;
