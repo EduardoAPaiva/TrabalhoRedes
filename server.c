@@ -423,7 +423,7 @@ int main(int argc, char *argv[]) {
         pthread_t thread;
         pthread_create(&thread, NULL, atender_cliente, novo_cliente);
 
-        // Quando a linha acima encerra, significa que o cliente ja foi desconectado e removido, entao encerra a thread
+        // Avisa ao sistema operacional para liberar automaticamente a thread quando ela encerrar seu processamento
         pthread_detach(thread);
 
     }
