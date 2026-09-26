@@ -48,6 +48,12 @@ JOGO *adiciona_jogo(CLIENTE *jogador1, CLIENTE *jogador2, LISTA_JOGOS *lista){
     novo_jogo->pontos_restantesJ1 = qtd_pontos;
     novo_jogo->pontos_restantesJ2 = qtd_pontos;
 
+    // Define o ultimo tiro de cada jogador inicialmente como NULO (indicado pelo numero -1)
+    novo_jogo->ultimo_tiroJ1[0] = -1;
+    novo_jogo->ultimo_tiroJ1[1] = -1;
+    novo_jogo->ultimo_tiroJ2[0] = -1;
+    novo_jogo->ultimo_tiroJ2[1] = -1;
+
     // Caso a lista esteja vazia, adiciona o jogo no inicio e retorna o ponteiro do novo jogo
     if(*lista == NULL){
         *lista = novo_jogo;

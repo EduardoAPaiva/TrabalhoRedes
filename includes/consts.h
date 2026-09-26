@@ -33,6 +33,14 @@
 #define TAM_MAXIMO_NAVIO 6
 #define NUMERO_NAVIOS_DISPONIVEIS {0,0,1,2,2,1}
 
+// Definicao de cores
+#define COR_VERMELHO "\033[31m"
+#define COR_RESET "\033[0m"
+// EM CASO DE ERRO NA EXIBICAO DAS CORES (COMO APARECER OS CODIGOS DA COR AO INVES DE TROCAR DE COR)
+// POR FAVOR, COMENTAR OS DOIS DEFINES ACIMA E DESCOMENTAR OS DOIS DEFINES ABAIXO
+// #define COR_VERMELHO ""
+// #define COR_RESET ""
+
 // Definicao de tamanho do buffer, porta padrao e maximo de clientes por servidor
 #define TAM_BUFFER 1024*10
 #define PORTA_PADRAO 8080

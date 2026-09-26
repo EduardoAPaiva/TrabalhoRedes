@@ -13,6 +13,9 @@ struct JOGO{
     char tabuleiro_tirosJ1[12][12];         // Tabuleiro de tiros que o jogador1 ja realizou
     char tabuleiro_tirosJ2[12][12];         // Tabuleiro de tiros que o jogador2 ja realizou
 
+    int ultimo_tiroJ1[2];           // Variavel que salva o ultimo tiro do jogador1, para imprimir colorido no tabuleiro
+    int ultimo_tiroJ2[2];           // Variavel que salva o ultimo tiro do jogador2, para imprimir colorido no tabuleiro
+
     int navios_disponiveisJ1[6];        // Navios disponiveis para o jogador1 ainda posicionar
     int navios_disponiveisJ2[6];        // Navios disponiveis para o jogador2 ainda posicionar
 

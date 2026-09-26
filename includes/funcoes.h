@@ -13,7 +13,7 @@ void preparar_tabuleiro(JOGO *partida);
 // Funcao que reseta o posicionamento de navios. Ou seja, transforma o tabuleiro no padrão vazio
 void resetar_tabuleiro(CLIENTE *cliente);
 // Funcao que coloca num buffer um texto, depois um tabuleiro, e depois outro texto. Esse buffer sera enviado para atualizar o terminal do cliente
-void* texto_tabuleiro(char buffer[], char antes[], char depois[], char tabuleiro[12][12]);
+void* texto_tabuleiro(char buffer[], char antes[], char depois[], char tabuleiro[12][12], int linhatiro, int colunatiro);
 // Funcao que analisa quantos navios uma lista de navios tem de disponibilidade, e cria o texto pra isso
 void* texto_navios_disponiveis(int navios[TAM_MAXIMO_NAVIO], char buffer[]);
 // Funcao que analisa se um comando de posicionamento de navio recebido pelo cliente esta valido de acordo com o estado da partida e do tabuleiro

@@ -98,7 +98,7 @@ void resetar_tabuleiro(CLIENTE *cliente){
 }
 
 // Funcao que coloca num buffer um texto, depois um tabuleiro, e depois outro texto. Esse buffer sera enviado para atualizar o terminal do cliente
-void* texto_tabuleiro(char buffer[], char antes[], char depois[], char tabuleiro[12][12]){
+void* texto_tabuleiro(char buffer[], char antes[], char depois[], char tabuleiro[12][12], int linhatiro, int colunatiro){
 
     // Variavel que ira sempre salvar a posicao do ultimo caractere adicionado no buffer
     int pos = 0;
@@ -114,10 +114,15 @@ void* texto_tabuleiro(char buffer[], char antes[], char depois[], char tabuleiro
     for(int i = 1; i<11; i++){
         for(int j = 0; j<12; j++){
             
+            // Caso for a primeira coluna, imprime a linha correspondente
             if(j == 0)
                 pos += sprintf(buffer + pos, "%d ", i-1);
-
-            pos += sprintf(buffer + pos, " %c ", tabuleiro[i][j]);
+            // Caso seja o ultimo tiro, printa o comando de cor para indicar que foi o ultimo tiro
+            if(i == linhatiro && j == colunatiro)
+                pos += sprintf(buffer + pos, COR_VERMELHO " %c " COR_RESET, tabuleiro[i][j]);
+            // Caso nao seja o ultimo tiro, nao printa o codigo de cor
+            else
+                pos += sprintf(buffer + pos, " %c ", tabuleiro[i][j]);
 
         }
 
@@ -322,11 +327,18 @@ int validar_ataque(char buffer[], CLIENTE *cliente){
     // Caso o cliente seja o jogador1
     if(cliente == partida->jogador1){
 
+        // Atualiza o local do ultimo tiro do jogador 1
+        partida->ultimo_tiroJ1[0] = linha;
+        partida->ultimo_tiroJ1[1] = coluna;
+
         // Caso a casa atacada pelo jogador1 seja um navio do jogador2
         if(partida->tabuleiro_naviosJ2[linha][coluna] == 'O'){
             // Diminui a quantidade de vidas do jogador2 e altera o tabuleiro de tiros do jogador1 para 'O'
             partida->pontos_restantesJ2--;
             partida->tabuleiro_tirosJ1[linha][coluna] = 'O';
+
+            // Atualiza a casa atacada pelo jogador1 para 'X' no tabuleiro de navios do jogador2
+            partida->tabuleiro_naviosJ2[linha][coluna] = 'X';
 
             // Caso o jogador2 nao tenha mais vidas restantes
             if(partida->pontos_restantesJ2 == 0){
@@ -346,19 +358,27 @@ int validar_ataque(char buffer[], CLIENTE *cliente){
         // Caso a casa atacada pelo jogador1 nao seja um navio do jogador2, apenas atualiza o tabuleiro de tiros do jogador1 para 'X'
         else{
             partida->tabuleiro_tirosJ1[linha][coluna] = 'X';
+
+            // Atualiza a casa atacada pelo jogador1 para 'X' no tabuleiro de navios do jogador2
+            partida->tabuleiro_naviosJ2[linha][coluna] = 'X';
         }
 
-        // Atualiza a casa atacada pelo jogador1 para 'X' no tabuleiro de navios do jogador2
-        partida->tabuleiro_naviosJ2[linha][coluna] = 'X';
     }
     // Caso o cliente seja o jogador2
     if(cliente == partida->jogador2){
+
+        // Atualiza o local do ultimo tiro do jogador 2
+        partida->ultimo_tiroJ2[0] = linha;
+        partida->ultimo_tiroJ2[1] = coluna;
 
         // Caso a casa atacada pelo jogador1 seja um navio do jogador1
         if(partida->tabuleiro_naviosJ1[linha][coluna] == 'O'){
             // Diminui a quantidade de vidas do jogador1 e altera o tabuleiro de tiros do jogador2 para 'O'
             partida->pontos_restantesJ1--;
             partida->tabuleiro_tirosJ2[linha][coluna] = 'O';
+            
+            // Atualiza a casa atacada pelo jogador2 para 'X' no tabuleiro de navios do jogador1
+            partida->tabuleiro_naviosJ1[linha][coluna] = 'X';
 
             // Caso o jogador1 nao tenha mais vidas restantes
             if(partida->pontos_restantesJ1 == 0){
@@ -378,10 +398,11 @@ int validar_ataque(char buffer[], CLIENTE *cliente){
         // Caso a casa atacada pelo jogador2 nao seja um navio do jogador1, apenas atualiza o tabuleiro de tiros do jogador2 para 'X'
         else{
             partida->tabuleiro_tirosJ2[linha][coluna] = 'X';
+
+            // Atualiza a casa atacada pelo jogador2 para 'X' no tabuleiro de navios do jogador1
+            partida->tabuleiro_naviosJ1[linha][coluna] = 'X';
         }
 
-        // Atualiza a casa atacada pelo jogador2 para 'X' no tabuleiro de navios do jogador1
-        partida->tabuleiro_naviosJ1[linha][coluna] = 'X';
     }
 
     // Retorna o codigo de lance executado com sucesso
