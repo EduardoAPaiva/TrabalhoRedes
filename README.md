@@ -109,8 +109,12 @@ A estrutura do projeto é organizada da seguinte forma:
 
 ```text
 .
-├── server.c
-├── client.c
+├── apps/
+│   ├── server.c
+│   └── client.c
+├── bin/
+│   ├── server
+│   └── client
 ├── src/
 │   ├── funcoes.c
 │   ├── struct_cliente.c
@@ -122,9 +126,11 @@ A estrutura do projeto é organizada da seguinte forma:
 │   ├── struct_cliente.h
 │   ├── struct_jogo.h
 │   └── terminal.h
-├── run.sh
+├── Makefile
 └── README.md
 ```
+
+Nota-se que a pasta 'bin' não existe no repositório. Ela será criada ao compilar o projeto.
 
 ## 9. Requisitos
 
@@ -145,6 +151,12 @@ make
 ```
 
 ## 11. Execução
+
+Antes da execução, navegue até a pasta bin:
+
+```bash
+cd bin
+```
 
 ### Servidor
 

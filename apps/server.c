@@ -1,8 +1,8 @@
-#include "includes/funcoes.h"
-#include "includes/struct_cliente.h"
-#include "includes/struct_jogo.h"
-#include "includes/terminal.h"
-#include "includes/consts.h"
+#include "../includes/funcoes.h"
+#include "../includes/struct_cliente.h"
+#include "../includes/struct_jogo.h"
+#include "../includes/terminal.h"
+#include "../includes/consts.h"
 
 // Lista encadeada com os clientes conectados
 LISTA_CLIENTES *clientes;

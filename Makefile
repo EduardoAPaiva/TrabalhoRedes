@@ -1,3 +1,4 @@
 all:
-	gcc server.c src/*.c -o server
-	gcc client.c -o client
+	mkdir -p bin
+	gcc apps/server.c src/*.c -o bin/server
+	gcc apps/client.c -o bin/client
