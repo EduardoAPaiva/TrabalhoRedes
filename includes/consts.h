@@ -31,7 +31,8 @@
 
 // Definicao do tamanho maximo de navios permitidos
 #define TAM_MAXIMO_NAVIO 6
-#define NUMERO_NAVIOS_DISPONIVEIS {0,0,1,2,2,1}
+//#define NUMERO_NAVIOS_DISPONIVEIS {0,0,1,2,2,1}
+#define NUMERO_NAVIOS_DISPONIVEIS {0,0,1,0,0,0}
 
 // Definicao de cores
 #define COR_VERMELHO "\033[31m"

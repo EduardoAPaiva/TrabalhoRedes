@@ -10,6 +10,7 @@ int quantidade_clientes = 0;
 
 // Cliente aguardando para entrar numa partida
 CLIENTE *cliente_esperando;
+int id_atual_cliente = 1;
 
 // Lista encadeada com os jogos existentes no momento
 LISTA_JOGOS *jogos;
@@ -35,7 +36,7 @@ void atualizar_partida(char *texto, int bytes_recebidos, CLIENTE *remetente) {
     // Caso o remetente esteja esperando uma partida e nao tenha ninguem esperando ou seja ele mesmo na lista
     if(remetente->estado == ESPERANDO_PARTIDA && (cliente_esperando == NULL || cliente_esperando == remetente)){
         cliente_esperando = remetente;                                  // Adiciona o remetente da mensagem na fila de cliente esperando
-        sprintf(buffer, "AGUARDANDO ENCONTRAR UMA PARTIDA...\n");       // Cria a mensagem de texto
+        sprintf(buffer, "==========================\n       BATALHA NAVAL     \n==========================\n\nAGUARDANDO ENCONTRAR UMA PARTIDA...\n");       // Cria a mensagem de texto
         send(remetente->socket, buffer, strlen(buffer), 0);             // Atualiza o terminal do cliente
     }
 
@@ -131,13 +132,12 @@ void remover_cliente(CLIENTE *cliente) {
 
     // Caso o cliente que desconectou estivesse em uma partida ja finalizada
     else if(partida != NULL){
-
         // Caso cliente seja o jogador1 e o jogador2 ainda esteja conectado
         if(cliente == partida->jogador1 && partida->jogador2 != NULL)
             // Apenas remove o jogador1 (cliente) da partida, mantendo a partida existindo ainda
             partida->jogador1 = NULL;
         // Caso o cliente seja o jogador2 e o jogador1 ainda esteja conectado
-        else if(cliente == partida->jogador2 && partida->jogador2 != NULL)
+        else if(cliente == partida->jogador2 && partida->jogador1 != NULL)
             // Apenas remove o jogador2 (cliente) da partida, mantendo a partida existindo ainda
             partida->jogador2 = NULL;
         // Caso o cliente esteja numa partida onde apenas ele estava conectado
@@ -169,15 +169,16 @@ void *atender_cliente(void *arg) {
     // Faz o cast para transformar o ponteiro de void em um ponteiro para CLIENTE
     CLIENTE *cliente = (CLIENTE *)arg;
 
-    // Obtem o socket do cliente a partir da struct
+    // Obtem o socket do cliente a partir da struct e define o id
     int socket_cliente = cliente->socket;
+    int id_cliente = cliente->id;
 
     // Define o buffer que recebera as mensagens e o tanto de bytes recebidos
     char buffer[TAM_BUFFER];
     int bytes_recebidos;
 
     // Printa no terminal do servidor que o cliente foi conectado
-    printf("Cliente conectado: %d\n", socket_cliente);
+    printf("Cliente conectado: %d\n", id_cliente);
 
     // Loop que espera uma mensagem do cliente (jogador) 
     while (1) {
@@ -292,13 +293,10 @@ void *atender_cliente(void *arg) {
         // Independente do estado, sempre chama a funcao de atualizar partida, para atualizar o terminal de quem enviou a mensagem
         atualizar_partida(buffer, bytes_recebidos, cliente);
 
-        // Printa no terminal do servidor a mensagem enviada pelo cliente
-        printf("Cliente %d: %s", socket_cliente, buffer);
-
     }
 
     // Caso saia do loop, o cliente desconectou. Dessa forma, printa no terminal do servidor que o cliente foi desconectado
-    printf("Cliente desconectado: %d\n", socket_cliente);
+    printf("Cliente desconectado: %d\n", id_cliente);
 
     // Chama a funcao de remover o cliente, que lida com o fato de talvez o cliente estar ou nao numa partida existente
     remover_cliente(cliente);
@@ -387,7 +385,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Se chegou aqui, o servidor foi inicializado corretamente. Imprime no terminal do servidor a porta do endereco de rede
-    printf("Servidor iniciado na porta %d...\n", porta);
+    printf("==========================\n       BATALHA NAVAL     \n==========================\n\nServidor iniciado na porta %d...\n", porta);
 
     // Loop infinito que aceita clientes
     while (1) {
@@ -412,9 +410,10 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        // Aloca e adiciona o cliente na lista de clientes conectados, incrementando o contador
-        novo_cliente = adiciona_cliente(cliente, clientes);
+        // Aloca e adiciona o cliente na lista de clientes conectados, incrementando os contadores
+        novo_cliente = adiciona_cliente(cliente, id_atual_cliente, clientes);
         quantidade_clientes++;
+        id_atual_cliente++;
 
         // Libera o mutex
         pthread_mutex_unlock(&mutex);

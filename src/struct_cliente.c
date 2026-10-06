@@ -16,7 +16,7 @@ LISTA_CLIENTES* cria_lista_clientes(){
 }
 
 // Funcao que adiciona um cliente no final de uma lista encadeada
-CLIENTE *adiciona_cliente(int socket, LISTA_CLIENTES *lista){
+CLIENTE *adiciona_cliente(int socket, int id, LISTA_CLIENTES *lista){
     
     // Aloca o novo cliente 
     CLIENTE *novo_cliente = (CLIENTE *)malloc(sizeof(CLIENTE));
@@ -27,8 +27,9 @@ CLIENTE *adiciona_cliente(int socket, LISTA_CLIENTES *lista){
         return NULL;
     }
 
-    // Salva o socket passado para a funcao no cliente
+    // Salva o socket e o id passado para a funcao no cliente
     novo_cliente->socket = socket;
+    novo_cliente->id = id;
 
     // Define-se alguns valores padrao para determinadas variaveis do cliente
     novo_cliente->prox = NULL;

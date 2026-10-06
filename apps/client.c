@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
 
     // Limpa o terminal do cliente e printa a mensagem de que foi conectado no servidor, pedindo o nome do cliente
     system("clear");
-    printf("Conectado ao servidor.\nDigite seu nome: ");
+    printf("==========================\n       BATALHA NAVAL     \n==========================\n\nConectado ao servidor.\nDigite seu nome: ");
 
     // Cria a thread que ficara recebendo mensagens, enquanto a thread principal fica responsavel por enviar as mensagens
     pthread_create(&thread, NULL, receber_mensagens, NULL);

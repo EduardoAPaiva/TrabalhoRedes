@@ -10,6 +10,7 @@ typedef struct CLIENTE CLIENTE;
 // Definindo a struct cliente com suas variaveis relevantes
 struct CLIENTE{
     char nickname[50];      // Nome do cliente
+    int id;
     int socket;             // Socket que o servidor enxerga aquele cliente
     int cadastrado;         // Booleano que diz se o cliente ja recebeu um nome ou nao
 
@@ -29,7 +30,7 @@ typedef CLIENTE* LISTA_CLIENTES;
 // Funcao que aloca uma lista de clientes e retorna a lista vazia
 LISTA_CLIENTES* cria_lista_clientes();
 // Funcao que adiciona um cliente no final de uma lista encadeada
-CLIENTE *adiciona_cliente(int socket, LISTA_CLIENTES *lista);
+CLIENTE *adiciona_cliente(int socket, int id, LISTA_CLIENTES *lista);
 // Funcao que remove um cliente especificado da lista encadeada
 void deleta_cliente(CLIENTE *cliente, LISTA_CLIENTES *lista);
 
