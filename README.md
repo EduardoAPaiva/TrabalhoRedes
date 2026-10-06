@@ -8,6 +8,8 @@ A aplicação implementa o jogo Batalha Naval, permitindo que diversas partidas 
 
 A arquitetura foi desenvolvida para suportar múltiplas conexões simultâneas por meio do uso de threads, permitindo que diferentes partidas sejam executadas de forma independente.
 
+OBS: a formatação dos comandos na batalha naval, devem ser sempre utilizando letras em maiúsculo, com coordenadas sendo letra primeiro e depois número (exemplo: B7 estaria correto, mas 7B está errado).
+
 ## 2. Integrantes
 
 | Integrante                     | Número USP | GitHub                                             |
@@ -119,12 +121,14 @@ A estrutura do projeto é organizada da seguinte forma:
 │   └── client
 ├── src/
 │   ├── funcoes.c
+│   ├── recv_send.c
 │   ├── struct_cliente.c
 │   ├── struct_jogo.c
 │   └── terminal.c
 ├── includes/
 │   ├── consts.h
 │   ├── funcoes.h
+│   ├── recv_send.h
 │   ├── struct_cliente.h
 │   ├── struct_jogo.h
 │   └── terminal.h

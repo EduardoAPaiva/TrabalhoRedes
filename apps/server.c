@@ -2,6 +2,7 @@
 #include "../includes/struct_cliente.h"
 #include "../includes/struct_jogo.h"
 #include "../includes/terminal.h"
+#include "../includes/recv_send.h"
 #include "../includes/consts.h"
 
 // Lista encadeada com os clientes conectados
@@ -37,7 +38,7 @@ void atualizar_partida(char *texto, int bytes_recebidos, CLIENTE *remetente) {
     if(remetente->estado == ESPERANDO_PARTIDA && (cliente_esperando == NULL || cliente_esperando == remetente)){
         cliente_esperando = remetente;                                  // Adiciona o remetente da mensagem na fila de cliente esperando
         sprintf(buffer, "==========================\n       BATALHA NAVAL     \n==========================\n\nAGUARDANDO ENCONTRAR UMA PARTIDA...\n");       // Cria a mensagem de texto
-        send(remetente->socket, buffer, strlen(buffer), 0);             // Atualiza o terminal do cliente
+        enviar_tudo(remetente->socket, buffer);             // Atualiza o terminal do cliente
     }
 
     // Caso o remetente esteja esperando uma partida e ja tenha outro esperando
@@ -183,7 +184,7 @@ void *atender_cliente(void *arg) {
     // Loop que espera uma mensagem do cliente (jogador) 
     while (1) {
         // Espera o cliente enviar uma mensagem
-        bytes_recebidos = recv(socket_cliente, buffer, TAM_BUFFER - 1, 0);
+        bytes_recebidos = receber_tudo(socket_cliente, buffer);
 
         // Caso nao receba bytes ou retorne um valor negativo, significa que o cliente desconectou, saindo do loop
         if (bytes_recebidos <= 0) {
@@ -191,15 +192,15 @@ void *atender_cliente(void *arg) {
         }
 
         // Garante que a mensagem termine com um \0
-        buffer[bytes_recebidos] = '\0';
+        buffer[bytes_recebidos-1] = '\0';
 
         // Caso o cliente ainda nao tenha sido cadastrado (colocou o nome)
         if(cliente->cadastrado == 0){
             // Bloqueia o mutex, substitui o \n por um \0, salva o nome no cliente, retorna o \n para o buffer e libera o mutex novamente
             pthread_mutex_lock(&mutex);
-            buffer[bytes_recebidos-1] = '\0';
+            buffer[bytes_recebidos-2] = '\0';
             salvar_nome(buffer, cliente);
-            buffer[bytes_recebidos-1] = '\n';
+            buffer[bytes_recebidos-2] = '\n';
             pthread_mutex_unlock(&mutex);
         }
 
@@ -405,7 +406,7 @@ int main(int argc, char *argv[]) {
         if (quantidade_clientes >= MAX_CLIENTES) {
             // Libera o mutex, envia mensagem ao cliente que ja esta cheio, encerra o cliente e retorna o loop
             pthread_mutex_unlock(&mutex);
-            send(cliente, "Servidor cheio.\n", 16, 0);
+            enviar_tudo(cliente, "Servidor cheio.\n");
             close(cliente);
             continue;
         }

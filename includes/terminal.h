@@ -4,6 +4,7 @@
 #include "struct_cliente.h"
 #include "struct_jogo.h"
 #include "funcoes.h"
+#include "recv_send.h"
 
 // Funcao que envia o terminal do estado de "POSICIONANDO NAVIOS" para atualizar o cliente 
 void terminal_posicionando_navios(JOGO *partida, CLIENTE *remetente);

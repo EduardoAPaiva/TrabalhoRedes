@@ -1,3 +1,4 @@
+#include "../includes/recv_send.h"
 #include "../includes/consts.h"
 
 // Variavel global que mantera o socket do servidor a qual o cliente esta conectado
@@ -12,7 +13,7 @@ void *receber_mensagens(void *arg) {
     // Loop infinito
     while (1) {
         // Espera receber uma mensagem do servidor
-        bytes_recebidos = recv(socket_servidor, buffer, TAM_BUFFER - 1, 0);
+        bytes_recebidos = receber_tudo(socket_servidor, buffer);
 
         // Caso retorne valor menor que zero, significa que o servidor foi encerrado. Printa isso no terminal e encerra o programa
         if (bytes_recebidos <= 0) {
@@ -91,7 +92,7 @@ int main(int argc, char *argv[]) {
         fgets(buffer, TAM_BUFFER, stdin);
 
         // Apos o cliente digitar, envia o texto digitado para o servidor
-        send(socket_servidor, buffer, strlen(buffer), 0);
+        enviar_tudo(socket_servidor, buffer);
     }
 
     // O cliente nao possui uma rotina de encerramente, ficando ativo indefinidamente
